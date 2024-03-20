@@ -2,17 +2,9 @@ import json
 import base64
 from django.conf import settings
 import openpyxl
-import pandas as pd
 from io import BytesIO
-import matplotlib.pyplot as plt
-import matplotlib.backends.backend_pdf
 from openpyxl.drawing.image import Image
-import pyexcel as pe
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from fpdf import FPDF
-import xlsxwriter
-from django.http import FileResponse, HttpResponse
+from django.http import  HttpResponse
 import requests
 #instalar el libreoffice por comando en la maquina
 import platform
@@ -515,7 +507,20 @@ def GeneratePDFintoSVG(questions_mtto, question_views, questions_deterioration, 
     if JSONquestions_mtto['otros1'] == True:
      hoja['O71'] = 'X'
    
-
+    if aprobado:
+      response = requests.get('https://firebasestorage.googleapis.com/v0/b/data-qc-api.appspot.com/o/FixedPictures%2FAPROBADO.png?alt=media&token=3a71be78-c06d-4832-9e63-342fa541fd76')
+      image_bytes = BytesIO(response.content)      
+      img = Image(image_bytes)
+      img.width = img.width
+      img.height = img.height       
+      hoja.add_image(img, 'I9')
+    else:
+      response = requests.get('https://firebasestorage.googleapis.com/v0/b/data-qc-api.appspot.com/o/FixedPictures%2FRECHAZADO.png?alt=media&token=3a71be78-c06d-4832-9e63-342fa541fd76')
+      image_bytes = BytesIO(response.content)      
+      img = Image(image_bytes)
+      img.width = img.width
+      img.height = img.height       
+      hoja.add_image(img, 'I9')
     #registro fotografico
     #placa
     routeFotoPlaca =JSONphotos['placadeidentificacion']    
@@ -529,8 +534,7 @@ def GeneratePDFintoSVG(questions_mtto, question_views, questions_deterioration, 
     img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
     # firma de inspector - tamaño
    
-    print(img.width)
-    print(img.height)
+    
     hoja2.add_image(img, 'B11')  # Agregar la imagen en la celda A1 o en la celda que desees 
 
     #tanque 

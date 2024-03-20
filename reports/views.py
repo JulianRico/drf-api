@@ -6,6 +6,7 @@ from django.views import View
 from reports.report_pdf_movil import GeneratePDFintoSVGMovil
 from .report_pdf_estacionario import GeneratePDFintoSVG
 from .certificado_pdf import GenerateCertificatePDFintoSVG
+from .certificado_pdfMovil import GenerateCertificatePDFintoSVGMovil
 from .models import Report
 from datetime import datetime
 from users.models import User
@@ -168,9 +169,9 @@ class SetSatus(View):
 
         # Reemplaza con la URL real
         
-        url_descargarCertificado = f'http://198.50.156.11:8000/api/pdfcreatecertificate/{id}'
+        url_descargarCertificado = f'https://api-qc-drf.onrender.com/api/pdfcreatecertificate/{id}'
 
-        url_descargarReporte = f'http://198.50.156.11:8000/api/pdfcreateimages/{id}'
+        url_descargarReporte = f'https://api-qc-drf.onrender.com/api/pdfcreateimages/{id}'
 
         user = "testqchecker@gmail.com"
         codeApp = "rflahrjtjqzbdumr"
@@ -257,7 +258,7 @@ class SetStatusReject(View):
 
         # Reemplaza con la URL real       
 
-        url_descargarReporte = f'http://198.50.156.11:8000/api/pdfcreateimages/{id}'
+        url_descargarReporte = f'https://api-qc-drf.onrender.com/api/pdfcreateimages/{id}'
 
         user = "testqchecker@gmail.com"
         codeApp = "rflahrjtjqzbdumr"
@@ -395,10 +396,10 @@ class  SVGtoPdfImagesView(View):
                 pdf_movil = GeneratePDFintoSVGMovil(
                 questions_mtto, question_views, questions_deterioration, tank_identification,
                 observations_and_results, signatures, photos, fecha_convertida,company, id_from_url,CumpleCertificado)
-                
+
                 def eliminar_archivo(ruta):
                     os.remove(ruta)   
-                print(pdf_movil)
+
                 if pdf_movil['path']:
                     temporizador = threading.Timer(5, eliminar_archivo, args=[pdf_movil['path']])
                     temporizador.start()
@@ -415,8 +416,7 @@ class  SVGtoPdfImagesView(View):
                 questions_mtto, question_views, questions_deterioration, tank_identification,
                 observations_and_results, signatures, photos, fecha_convertida,company, id_from_url,CumpleCertificado)
 
-            print(pdf_output)
-            
+           
         # Envía el PDF por correo electrónico
         # self.send_email_with_attachment(id_from_url, companie.name,
         #           companie.email, companieuser.emailContact, user.email, fecha_convertida)
@@ -524,22 +524,39 @@ class CertificatePDFView(View):
            
             #return HttpResponse(error_message)             
         
+        tank_format = json.loads(tank_identification)
             
-        # Pasa los campos a la función GeneratePDFintoSVG
-        certificado = GenerateCertificatePDFintoSVG(
-            questions_mtto, question_views, questions_deterioration, tank_identification,
-            observations_and_results, fecha_convertida,  company,  id_from_url, CumpleCertificado)
 
-        
-        def eliminar_archivo(ruta):
-            os.remove(ruta)   
+        if 'formato' in tank_format and tank_format['formato'] == "Movil":
 
-        if certificado['path']:
-            temporizador = threading.Timer(5, eliminar_archivo, args=[certificado['path']])
-            temporizador.start()
-                # Crear una respuesta de descarga con el archivo PDF
-                
-        return  certificado['response']  
+            certificado = GenerateCertificatePDFintoSVGMovil(
+                questions_mtto, question_views, questions_deterioration, tank_identification,
+                observations_and_results, fecha_convertida,  company,  id_from_url, CumpleCertificado)
+            
+            def eliminar_archivo(ruta):
+                os.remove(ruta)   
+
+            if certificado['path']:
+                temporizador = threading.Timer(5, eliminar_archivo, args=[certificado['path']])
+                temporizador.start()
+                    # Crear una respuesta de descarga con el archivo PDF
+                    
+            return  certificado['response']
+            
+        else:
+            certificado = GenerateCertificatePDFintoSVG(
+                questions_mtto, question_views, questions_deterioration, tank_identification,
+                observations_and_results, fecha_convertida,  company,  id_from_url, CumpleCertificado)
+
+            def eliminar_archivo(ruta):
+                os.remove(ruta)   
+
+            if certificado['path']:
+                temporizador = threading.Timer(5, eliminar_archivo, args=[certificado['path']])
+                temporizador.start()
+                    # Crear una respuesta de descarga con el archivo PDF
+                    
+            return  certificado['response']  
 
     
 
