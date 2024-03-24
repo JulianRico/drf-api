@@ -508,6 +508,7 @@ def GeneratePDFintoSVG(questions_mtto, question_views, questions_deterioration, 
      hoja['O71'] = 'X'
    
     if aprobado:
+      print('aprobado imagen')
       response = requests.get('https://firebasestorage.googleapis.com/v0/b/data-qc-api.appspot.com/o/FixedPictures%2FAPROBADO.png?alt=media&token=3a71be78-c06d-4832-9e63-342fa541fd76')
       image_bytes = BytesIO(response.content)      
       img = Image(image_bytes)
@@ -515,6 +516,7 @@ def GeneratePDFintoSVG(questions_mtto, question_views, questions_deterioration, 
       img.height = img.height       
       hoja.add_image(img, 'I9')
     else:
+      print('rechazado imagen')
       response = requests.get('https://firebasestorage.googleapis.com/v0/b/data-qc-api.appspot.com/o/FixedPictures%2FRECHAZADO.png?alt=media&token=3a71be78-c06d-4832-9e63-342fa541fd76')
       image_bytes = BytesIO(response.content)      
       img = Image(image_bytes)
@@ -523,133 +525,142 @@ def GeneratePDFintoSVG(questions_mtto, question_views, questions_deterioration, 
       hoja.add_image(img, 'I9')
     #registro fotografico
     #placa
-    routeFotoPlaca =JSONphotos['placadeidentificacion']    
-    response = requests.get(routeFotoPlaca)
+      
+    routeFotoPlaca =JSONphotos['placadeidentificacion'] 
+    if    routeFotoPlaca:
+      response = requests.get(routeFotoPlaca)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-   
+      img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
     
-    hoja2.add_image(img, 'B11')  # Agregar la imagen en la celda A1 o en la celda que desees 
+      
+      hoja2.add_image(img, 'B11')  # Agregar la imagen en la celda A1 o en la celda que desees 
 
     #tanque 
-    routeFotoTanque =JSONphotos['tanqueentero']    
-    response = requests.get(routeFotoTanque)
+    routeFotoTanque =JSONphotos['tanqueentero'] 
+    if routeFotoTanque :  
+      response = requests.get(routeFotoTanque)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja2.add_image(img, 'J11')  # Agregar la imagen en la celda A1 o en la celda que desees 
+      img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja2.add_image(img, 'J11')  # Agregar la imagen en la celda A1 o en la celda que desees 
 
     #stiker 
     #hoja2['A26'] = JSONphotos['stickerinstalado']
 
-    routeFotoStiker =JSONphotos['stickerinstalado']    
-    response = requests.get(routeFotoStiker)
+    routeFotoStiker =JSONphotos['stickerinstalado']   
+    if routeFotoStiker: 
+      response = requests.get(routeFotoStiker)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja2.add_image(img, 'B27')
+      img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja2.add_image(img, 'B27')
 
 
   
     #acsesorios 
-    routeFotoAcsesorio =JSONphotos['accesoriosenpruebadehermeticidad']    
-    response = requests.get(routeFotoAcsesorio)
+    routeFotoAcsesorio =JSONphotos['accesoriosenpruebadehermeticidad'] 
+    if routeFotoAcsesorio:
+      response = requests.get(routeFotoAcsesorio)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja2.add_image(img, 'J27')  # Agregar la imagen en la celda A1 o en la celda que desees 
+      img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja2.add_image(img, 'J27')  # Agregar la imagen en la celda A1 o en la celda que desees 
 
-    routeFotoDefectorechazo =JSONphotos['defectologiaderechazo']    
-    response = requests.get(routeFotoDefectorechazo)
+    routeFotoDefectorechazo =JSONphotos['defectologiaderechazo']  
+    if routeFotoDefectorechazo:   
+      response = requests.get(routeFotoDefectorechazo)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja2.add_image(img, 'F43')  # Agregar la imagen en la celda A1 o en la celda que desees 
+      img.width = 550 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = 275  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja2.add_image(img, 'F43')  # Agregar la imagen en la celda A1 o en la celda que desees 
 
     #defectologia y defectos encointrados 
     #hoja2['A43'] = JSONphotos['defectologiaderechazo']
 
-    routeFotoDefecto =JSONphotos['defectosencontradosenlainspeccion']    
-    response = requests.get(routeFotoDefecto)
+    routeFotoDefecto =JSONphotos['defectosencontradosenlainspeccion']  
+    if  routeFotoDefecto: 
+      response = requests.get(routeFotoDefecto)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = 400 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = 200  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja2.add_image(img, 'G60')  # Agregar la imagen en la celda A1 o en la celda que desees 
+      img.width = 400 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = 200  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja2.add_image(img, 'G60')  # Agregar la imagen en la celda A1 o en la celda que desees 
 
     #hoja2['A60'] = JSONphotos['defectosencontradosenlainspeccion']
 
     #firma
     routeFirmaUsuario =JSONsignatures['firmaUsuario']
-    response = requests.get(routeFirmaUsuario)
+    if routeFirmaUsuario:
+      response = requests.get(routeFirmaUsuario)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = img.width / 0.5 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = img.height * 0.3  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja.add_image(img, 'J73')  # Agregar la imagen en la celda A1 o en la celda que desees
+      img.width = img.width / 0.5 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = img.height * 0.3  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja.add_image(img, 'J73')  # Agregar la imagen en la celda A1 o en la celda que desees
     
     #firma instructor
     routeFirmaInstructor =JSONsignatures['firmaInspector']
-    response = requests.get(routeFirmaInstructor)
+    if routeFirmaInstructor:
+      response = requests.get(routeFirmaInstructor)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = img.width / 2 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = img.height * 0.3  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja.add_image(img, 'E73')  # Agregar la imagen en la celda A1 o en la celda que desees
+      img.width = img.width / 2 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = img.height * 0.3  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja.add_image(img, 'E73')  # Agregar la imagen en la celda A1 o en la celda que desees
     
       
-
+    print('llego hasta aqui')
     # Guardar el archivo Excel editado en un nuevo archivo
     workbook.save(f'reports/xlxs/reporte_tanque_fijo_QC_{id}.xlsx')
     # Offer the PDF file for download    
     input_excel =  f'reports/xlxs/reporte_tanque_fijo_QC_{id}.xlsx' 
     output_pdf = f'reports/pdfs'
-    
+    print('llego hasta aca')
     # Comando para convertir Excel a PDF en Windows
     if platform.system() == 'Windows':
       cmd = f"start /wait soffice --headless --convert-to pdf {input_excel} --outdir {output_pdf}"

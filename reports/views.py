@@ -169,9 +169,9 @@ class SetSatus(View):
 
         # Reemplaza con la URL real
         
-        url_descargarCertificado = f'https://api-qc-drf.onrender.com/api/pdfcreatecertificate/{id}'
+        url_descargarCertificado = f'http://198.50.156.11:8000/api/pdfcreatecertificate/{id}'
 
-        url_descargarReporte = f'https://api-qc-drf.onrender.com/api/pdfcreateimages/{id}'
+        url_descargarReporte = f'http://198.50.156.11:8000/api/pdfcreatereporte/{id}'
 
         user = "testqchecker@gmail.com"
         codeApp = "rflahrjtjqzbdumr"
@@ -258,7 +258,7 @@ class SetStatusReject(View):
 
         # Reemplaza con la URL real       
 
-        url_descargarReporte = f'https://api-qc-drf.onrender.com/api/pdfcreateimages/{id}'
+        url_descargarReporte = f'http://198.50.156.11:8000/api/pdfcreatereporte/{id}'
 
         user = "testqchecker@gmail.com"
         codeApp = "rflahrjtjqzbdumr"
@@ -420,6 +420,7 @@ class  SVGtoPdfImagesView(View):
         # Envía el PDF por correo electrónico
         # self.send_email_with_attachment(id_from_url, companie.name,
         #           companie.email, companieuser.emailContact, user.email, fecha_convertida)
+            print(pdf_output)
             def eliminar_archivo(ruta):
                 os.remove(ruta)                
             if pdf_output['path']:

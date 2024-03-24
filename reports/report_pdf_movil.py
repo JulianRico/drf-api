@@ -429,46 +429,49 @@ def GeneratePDFintoSVGMovil(questions_mtto, question_views, questions_deteriorat
 
     #firmaUsuario
     routeFirmaUsuario =JSONsignatures['firmaUsuario']
-    response = requests.get(routeFirmaUsuario)
+    if routeFirmaUsuario:
+      response = requests.get(routeFirmaUsuario)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = img.width / 3.5 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = img.height * 0.3  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja.add_image(img, 'K67')  # Agregar la imagen en la celda A1 o en la celda que desees
+      img.width = img.width / 3.5 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = img.height * 0.3  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja.add_image(img, 'K67')  # Agregar la imagen en la celda A1 o en la celda que desees
 
     #firma inspector
     routeFirmaInspector =JSONsignatures['firmaInspector']
-    response = requests.get(routeFirmaInspector)
+    if routeFirmaInspector:
+      response = requests.get(routeFirmaInspector)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = img.width / 3.5 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = img.height * 0.3  # Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja.add_image(img, 'F67')  # Agregar la imagen en la celda A1 o en la celda que desees
+      img.width = img.width / 3.5 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = img.height * 0.3  # Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja.add_image(img, 'F67')  # Agregar la imagen en la celda A1 o en la celda que desees
     
     #registro fotografico 
     #placa
     routePlaca =JSONphotos['placadeidentificacion']
-    response = requests.get(routePlaca)
+    if routePlaca: 
+      response = requests.get(routePlaca)
 
-    image_bytes = BytesIO(response.content)
-    # Cargar la imagen en la hoja de trabajo
-    img = Image(image_bytes)
+      image_bytes = BytesIO(response.content)
+      # Cargar la imagen en la hoja de trabajo
+      img = Image(image_bytes)
 
-    img.width = 500 # Puedes ajustar el ancho de la imagen según tus necesidades
-    img.height = 275 #Puedes ajustar la altura de la imagen según tus necesidades
-    # firma de inspector - tamaño
-    
-    hoja2.add_image(img, 'B11')  # Agregar la imagen en la celda A1 o en la celda que desees
+      img.width = 500 # Puedes ajustar el ancho de la imagen según tus necesidades
+      img.height = 275 #Puedes ajustar la altura de la imagen según tus necesidades
+      # firma de inspector - tamaño
+      
+      hoja2.add_image(img, 'B11')  # Agregar la imagen en la celda A1 o en la celda que desees
 
     #tanque
     routeTanque =JSONphotos['tanqueentero']

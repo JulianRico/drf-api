@@ -62,7 +62,7 @@ class ReportSerializer(serializers.ModelSerializer):
         user = "testqchecker@gmail.com"
         codeApp = "rflahrjtjqzbdumr"
         # Reemplaza con la URL real
-        url_revisar = f'http://198.50.156.11:8000/api/pdfcreateimages/{id}'
+        url_revisar = f'http://198.50.156.11:8000/api/pdfcreatecertificate/{id}'
         # Reemplaza con la URL real
         url_aprobar = f'http://198.50.156.11:8000/api/reportaprobe/{id}'
 
@@ -70,13 +70,13 @@ class ReportSerializer(serializers.ModelSerializer):
 
         subject = 'Informe para su revisión y aprobación'
         to = ['juliquinterorico@hotmail.com',
-              'dddinamico@gmail.com', "jhonfredyquintero@gmail.com", userEmail]
+               "jhonfredyquintero@gmail.com", userEmail]
         # Genera el contenido HTML directamente en el código
         html_content = f"""
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Informe para Revisión y Aprobación</title>
+        <title>Informe para Revisión y Aprobación [Quality Control - Certificado {id} Generado]</title>
     </head>
     <body>
         <p>Estimado(a) destinatario,</p>
