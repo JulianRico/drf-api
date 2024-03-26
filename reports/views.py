@@ -561,25 +561,15 @@ class CertificatePDFView(View):
             
 
         if 'formato' in tank_format and tank_format['formato'] == "Movil":
-
-            certificado = GenerateCertificatePDFintoSVGMovil(
-                questions_mtto, question_views, questions_deterioration, tank_identification,
-                observations_and_results, fecha_convertida,  company,  id_from_url, CumpleCertificado)
             
-            def eliminar_archivo(ruta):
-                os.remove(ruta)   
-
-            if certificado['path']:
-                temporizador = threading.Timer(5, eliminar_archivo, args=[certificado['path']])
-                temporizador.start()
                     # Crear una respuesta de descarga con el archivo PDF
                     
-            return  certificado['response']
+            return   HttpResponse("El archivo PDF no existe", status=404)
             
         else:
             certificado = GenerateCertificatePDFintoSVG(
                 questions_mtto, question_views, questions_deterioration, tank_identification,
-                observations_and_results, fecha_convertida,  company,  id_from_url, CumpleCertificado)
+                observations_and_results, fecha_convertida,  company,  id_from_url, CumpleCertificado, report.idcerticate)
 
             def eliminar_archivo(ruta):
                 os.remove(ruta)   

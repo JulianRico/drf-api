@@ -29,7 +29,7 @@ import subprocess
 #instalar el
 
 def GenerateCertificatePDFintoSVG(questions_mtto, JSONquestion_views, questions_deterioration, tank_identification,
-                       observations_and_results,  fecha_convertida,  companie,  id, aprobado):
+                       observations_and_results,  fecha_convertida,  companie,  id, aprobado, Idcert):
    # Crear un objeto BytesIO para guardar la imagen en memoria
    print(companie)
    
@@ -68,7 +68,7 @@ def GenerateCertificatePDFintoSVG(questions_mtto, JSONquestion_views, questions_
 
     #datos iniciales
    hoja['D37'] = id
-   hoja['F9'] = id
+   hoja['F9'] = Idcert
    hoja['G10'] = fecha_convertida
    hoja['C11'] = companie[1] #nombre
    
@@ -83,7 +83,7 @@ def GenerateCertificatePDFintoSVG(questions_mtto, JSONquestion_views, questions_
 
     #datos vahiculo
    hoja['E16']=JSONtank_identification['capacidadNominal']
-   hoja['G16']='X'
+   hoja['G16']="{:.2f}".format(float(JSONtank_identification['capacidadNominal']) * 3.78541)
    hoja['H15']=JSONtank_identification['fabricante']
    hoja['F15']=JSONtank_identification['numeroSerie']
    hoja['C15']=JSONtank_identification['tipoTanque']

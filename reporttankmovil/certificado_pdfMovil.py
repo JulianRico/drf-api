@@ -29,7 +29,7 @@ import subprocess
 #instalar el
 
 def GenerateCertificatePDFintoSVGMovil(questions_mtto, JSONquestion_views, questions_deterioration, tank_identification,
-                       observations_and_results,  fecha_convertida,  companie,  id, aprobado):
+                       observations_and_results,  fecha_convertida,  companie,  id, aprobado, Idcert):
    
    # Crear un objeto BytesIO para guardar la imagen en memoria
     
@@ -40,7 +40,7 @@ def GenerateCertificatePDFintoSVGMovil(questions_mtto, JSONquestion_views, quest
         box_size=2,  # Tamaño de los cuadros en el código QR
         border=2,  # Ancho del borde blanco alrededor del código QR
     )
-    data = f"http://198.50.156.11:8000/api/pdfcreatecertificate/{id}/"  # Puedes cambiar esto por tu propio enlace o datos
+    data = f"http://198.50.156.11:8000/api/pdfcreatecertificatemovil/{id}/"  # Puedes cambiar esto por tu propio enlace o datos
     qr.add_data(data)   
     img = qr.make_image(fill_color="black", back_color="white")
     img.resize((20, 20))   
@@ -70,7 +70,7 @@ def GenerateCertificatePDFintoSVGMovil(questions_mtto, JSONquestion_views, quest
     #datos iniciales 
 
     hoja['D36'] = id
-    hoja['F9'] = id
+    hoja['F9'] = Idcert
     hoja['G10'] = fecha_convertida
     hoja['C11'] = companie[1] #nombre
     
@@ -81,7 +81,7 @@ def GenerateCertificatePDFintoSVGMovil(questions_mtto, JSONquestion_views, quest
     hoja['E17'] = companie[6]
     #datos vahiculo
     hoja['E16']=JSONtank_identification['capacidadNominal']
-    hoja['G16']='X'
+    hoja['G16'] = "{:.2f}".format(float(JSONtank_identification['capacidadNominal']) * 3.78541)
     hoja['H15']=JSONtank_identification['fabricante']
     hoja['F15']=JSONtank_identification['numeroSerie']
     hoja['C15']=JSONtank_identification['tipoTanque']
@@ -92,40 +92,60 @@ def GenerateCertificatePDFintoSVGMovil(questions_mtto, JSONquestion_views, quest
     #hermeticidad
     if JSONtank_identification['hermeticidad']['cumple']== True:
      hoja['G24'] = 'CUMPLE'
+    else:
+      hoja['G24'] = 'NO CUMPLE'
     #soldadura
     if JSONobservations_and_results['soldadura']['cumple']== True:
      hoja['G25'] = 'CUMPLE'
+    else:
+      hoja['G25'] = 'NO CUMPLE' 
     #abollladura
     if JSONtank_identification['abolladura']['cumple']== False:
      hoja['G26'] = 'CUMPLE'
+    else:
+      hoja['G26'] = 'NO CUMPLE'
     #hinchamiento
     if JSONtank_identification['hinchamiento']['cumple']== False:
      hoja['G27'] = 'CUMPLE'
+    else:
+      hoja['G27'] = 'NO CUMPLE'
     #hundimientos
     if JSONtank_identification['hendiduras']['cumple']== False:
      hoja['G28'] = 'CUMPLE'
+    else:
+      hoja['G28'] = 'NO CUMPLE'
     #corrosion
     if JSONtank_identification['corrosion']['cumple']== False:
      hoja['G29'] = 'CUMPLE'
+    else:
+      hoja['G29'] = 'NO CUMPLE'
     #tuberia
     if JSONobservations_and_results['corrosion']['cumple']== True & JSONobservations_and_results['fisurasoescape']['cumple']== True &  JSONobservations_and_results['roscas']['cumple']== True &  JSONobservations_and_results['aplastamiento']['cumple']== True:
      hoja['G30'] = 'CUMPLE'
+    else:
+      hoja['G30'] = 'NO CUMPLE'
     #valvulas de alivio
     if JSONtank_identification['valvulaAlivio']['cumple']== False:
      hoja['G31'] = 'CUMPLE'
+    else:
+      hoja['G31'] = 'NO CUMPLE'
     #conexiones
     if JSONtank_identification['EstadoConexionCorrosion']['cumple']== False & JSONtank_identification['EstadoConexionEvidenciaGolpes']['cumple']== False &  JSONtank_identification['EstadoConexionDesgaste']['cumple']== False &  JSONtank_identification['EstadoConexionOtros']['cumple']== False:
      hoja['G32'] = 'CUMPLE'
     else:
-     hoja['G32'] = 'NOCUMPLE'
+     hoja['G32'] = 'NO CUMPLE'
 
 
     #fajas
     if JSONquestion_views['fajasapoyo']['cumple']== True & JSONquestion_views['sobresanos']['cumple']== True &  JSONquestion_views['soportes']['cumple']== True:
      hoja['G33'] = 'CUMPLE'
+    else:
+     hoja['G33'] = 'NO CUMPLE'
     #tuberia
     if JSONobservations_and_results['soldadura']['cumple']== True & JSONobservations_and_results['corrosion']['cumple']== True &  JSONobservations_and_results['fisurasoescape']['cumple']== True &  JSONobservations_and_results['roscas']['cumple']== True & JSONobservations_and_results['aplastamiento']['cumple']== True:
      hoja['G34'] = 'CUMPLE'
+    else:
+     hoja['G34'] = 'NO CUMPLE'
 
 
     

@@ -476,7 +476,7 @@ class CertificatePDFView(View):
             # Consulta el modelo ReportTankMovil usando el ID
             report = ReportTankMovil.objects.get(id=id_from_url)
         except ReportTankMovil.DoesNotExist:
-            return HttpResponse("El reporte no existe.")
+            return HttpResponse("El certificado asociado al reporte no existe.")
 
         # Aquí puedes acceder a los campos del reporte
         # Convierte la cadena de fecha a un objeto datetime
@@ -568,7 +568,7 @@ class CertificatePDFView(View):
 
             certificado = GenerateCertificatePDFintoSVGMovil(
                 questions_mtto, question_views, questions_deterioration, tank_identification,
-                observations_and_results, fecha_convertida,  company,  id_from_url, CumpleCertificado)
+                observations_and_results, fecha_convertida,  company,  id_from_url, CumpleCertificado, report.idcerticate)
             
             def eliminar_archivo(ruta):
                 os.remove(ruta)   
@@ -580,20 +580,10 @@ class CertificatePDFView(View):
                     
             return  certificado['response']
             
-        else:
-            certificado = GenerateCertificatePDFintoSVG(
-                questions_mtto, question_views, questions_deterioration, tank_identification,
-                observations_and_results, fecha_convertida,  company,  id_from_url, CumpleCertificado)
-
-            def eliminar_archivo(ruta):
-                os.remove(ruta)   
-
-            if certificado['path']:
-                temporizador = threading.Timer(5, eliminar_archivo, args=[certificado['path']])
-                temporizador.start()
+        else:            
                     # Crear una respuesta de descarga con el archivo PDF
                     
-            return  certificado['response']  
+             return   HttpResponse("El archivo PDF no existe", status=404) 
 
     
 
