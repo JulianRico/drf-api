@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include('users.urls')),
     path('', include('reports.urls')),
     path('', include('companies.urls')),
+    path('', include('reporttankmovil.urls')),
     path('docs/', include_docs_urls(title='documentation API')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

@@ -5,7 +5,7 @@ from companies.models import Companie, UserCompany
 # Create your models here.
 
 
-class Report(models.Model):
+class ReportTankMovil(models.Model):
     questionsmtto = models.JSONField()
     questionviews = models.JSONField()
     questionsdeterioration = models.JSONField()
@@ -13,18 +13,18 @@ class Report(models.Model):
     observationsandresults = models.JSONField()
     signatures = models.JSONField()
     photos = models.JSONField(null=True)
-    idcerticate = models.CharField(max_length=30,null=True, blank=True)
+    idcerticate = models.CharField(max_length=30, null=True, blank=True)
 
     SelfStatus = ((1, "Espera"), (2, "Rechazado"), (3, "Aprobado"))
     status = models.IntegerField(choices=SelfStatus, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, related_name='reports',
+    user = models.ForeignKey(User, related_name='reporttankmovil',
                              on_delete=models.CASCADE, blank=True, null=True)
     companie = models.ForeignKey(
-        Companie, related_name='reports', on_delete=models.CASCADE, blank=True, null=True)
+        Companie, related_name='reporttankmovil', on_delete=models.CASCADE, blank=True, null=True)
 
     userCompany = models.ForeignKey(
-        UserCompany, related_name='reports', on_delete=models.CASCADE, blank=True, null=True)
+        UserCompany, related_name='reporttankmovil', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return str(self.id)

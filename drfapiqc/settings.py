@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'coreapi',
     'users',
     'companies',
-    'reports'
+    'reports',
+    'reporttankmovil'
 
 ]
 

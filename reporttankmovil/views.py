@@ -7,7 +7,7 @@ from reports.report_pdf_movil import GeneratePDFintoSVGMovil
 from .report_pdf_estacionario import GeneratePDFintoSVG
 from .certificado_pdf import GenerateCertificatePDFintoSVG
 from .certificado_pdfMovil import GenerateCertificatePDFintoSVGMovil
-from .models import Report
+from .models import ReportTankMovil
 from datetime import datetime
 from users.models import User
 from companies.models import Companie, UserCompany
@@ -26,9 +26,9 @@ class SVGtoPDFView(View):
         print(id_from_url)
 
         try:
-            # Consulta el modelo Report usando el ID
-            report = Report.objects.get(id=id_from_url)
-        except Report.DoesNotExist:
+            # Consulta el modelo ReportTankMovil usando el ID
+            report = ReportTankMovil.objects.get(id=id_from_url)
+        except ReportTankMovil.DoesNotExist:
             return HttpResponse("El reporte no existe.")
 
         # Aquí puedes acceder a los campos del reporte
@@ -48,21 +48,21 @@ class SVGtoPDFView(View):
         photos = report.photos
 
         try:
-            # Consulta el modelo Report usando el ID
+            # Consulta el modelo ReportTankMovil usando el ID
             user = User.objects.get(name=report.user)
         except User.DoesNotExist:
             return HttpResponse("El usuario no existe.")
         print(user.email)
 
         try:
-            # Consulta el modelo Report usando el ID
+            # Consulta el modelo ReportTankMovil usando el ID
             companie = Companie.objects.get(name=report.companie)
         except Companie.DoesNotExist:
             return HttpResponse("la compañia no existe.")
         print(companie.email)
 
         try:
-            # Consulta el modelo Report usando el ID
+            # Consulta el modelo ReportTankMovil usando el ID
             companieuser = UserCompany.objects.get(usuario=report.userCompany)
         except UserCompany.DoesNotExist:
             return HttpResponse("El usuario de compañia no existe.")
@@ -124,15 +124,14 @@ class SetSatus(View):
     def get(self, request, *args, **kwargs):
         try:
             report_id = kwargs.get('report_id')
-            print(report_id)           
-
+            print(report_id)
             beforeID = report_id - 1
-            reportBefore = Report.objects.get(pk=beforeID)              
+            reportBefore = ReportTankMovil.objects.get(pk=beforeID)              
             Idcertificate = reportBefore.idcerticate
             #report_data = report.__dict__# todos los datos            
             if reportBefore.status == 3:
                 new_status = 3
-                report = Report.objects.get(pk=report_id)
+                report = ReportTankMovil.objects.get(pk=report_id)
                 print('aprobado')
                 report.idcerticate = int(Idcertificate) + 1
                 report.status = new_status
@@ -141,13 +140,13 @@ class SetSatus(View):
             if reportBefore.status == 2:
                 abs(int(Idcertificate))
                 new_status = 3
-                report = Report.objects.get(pk=report_id)
+                report = ReportTankMovil.objects.get(pk=report_id)
                 print('rechazado')
                 report.idcerticate = abs(int(Idcertificate)) + 1
                 report.status = new_status
                 report.save()
-            #report_data = report.__dict__# todos los datos 
-            
+                #extracio de informacion-
+           
 
             fecha = report.created_at
             fecha_str = fecha.strftime("%Y-%m-%d %H:%M:%S.%f%z")
@@ -156,21 +155,21 @@ class SetSatus(View):
             fecha_convertida = fecha_objeto.strftime("%d-%m-%Y")
 
             try:
-                # Consulta el modelo Report usando el ID
+                # Consulta el modelo ReportTankMovil usando el ID
                 user = User.objects.get(name=report.user)
             except User.DoesNotExist:
                 return HttpResponse("El usuario no existe.")
             print(user.email)
 
             try:
-                # Consulta el modelo Report usando el ID
+                # Consulta el modelo ReportTankMovil usando el ID
                 companie = Companie.objects.get(name=report.companie)
             except Companie.DoesNotExist:
                 return HttpResponse("la compañia no existe.")
             print(companie.email)
 
             try:
-                # Consulta el modelo Report usando el ID
+                # Consulta el modelo ReportTankMovil usando el ID
                 companieuser = UserCompany.objects.get(
                     usuario=report.userCompany)
             except UserCompany.DoesNotExist:
@@ -180,7 +179,7 @@ class SetSatus(View):
             self.send_email_with_attachment(
                 report_id, fecha_convertida, companie.email, user.email, companieuser.emailContact, companie.name)
             return HttpResponse(f"Reporte aprobado {report_id}.")
-        except Report.DoesNotExist:
+        except ReportTankMovil.DoesNotExist:
             return HttpResponse(f"El reporte {report_id} no Existe.")
 
     def send_email_with_attachment(self, id, fecha, correoempresa, correousuario, correousuarioempresa, namecompanie):
@@ -232,26 +231,31 @@ class SetStatusReject(View):
            
             report_id = kwargs.get('id_report')
             print(report_id)
+
             beforeID = report_id - 1
-            reportBefore = Report.objects.get(pk=beforeID)              
+            reportBefore = ReportTankMovil.objects.get(pk=beforeID)              
             Idcertificate = reportBefore.idcerticate
-
-            if reportBefore.status == 2:                    
-                    new_status = 2
-                    report = Report.objects.get(pk=report_id)
-                    print('rechazado')
-                    report.idcerticate = Idcertificate
-                    report.status = new_status
-                    report.save()
-
-            if reportBefore.status == 3:
+            #report_data = report.__dict__# todos los datos 
+            if reportBefore.status == 2:                
                 new_status = 2
-                report = Report.objects.get(pk=report_id)
-                print('aprobado')
-                report.idcerticate = f'-{Idcertificate}'
+                report = ReportTankMovil.objects.get(pk=report_id)
+                print('rechazado')
+                report.idcerticate = Idcertificate
                 report.status = new_status
                 report.save()
 
+            if reportBefore.status == 3:
+                new_status = 2
+                report = ReportTankMovil.objects.get(pk=report_id)
+                print('aprobado')
+                report.idcerticate = f'-{Idcertificate}'
+                report.status = new_status
+                report.save()                
+                
+            
+                #extracio de informacion-
+
+            
             fecha = report.created_at
             fecha_str = fecha.strftime("%Y-%m-%d %H:%M:%S.%f%z")
             fechafull = fecha_str.split(" ")
@@ -259,21 +263,21 @@ class SetStatusReject(View):
             fecha_convertida = fecha_objeto.strftime("%d-%m-%Y")
 
             try:
-                # Consulta el modelo Report usando el ID
+                # Consulta el modelo ReportTankMovil usando el ID
                 user = User.objects.get(name=report.user)
             except User.DoesNotExist:
                 return HttpResponse("El usuario no existe.")
             print(user.email)
 
             try:
-                # Consulta el modelo Report usando el ID
+                # Consulta el modelo ReportTankMovil usando el ID
                 companie = Companie.objects.get(name=report.companie)
             except Companie.DoesNotExist:
                 return HttpResponse("la compañia no existe.")
             print(companie.email)
 
             try:
-                # Consulta el modelo Report usando el ID
+                # Consulta el modelo ReportTankMovil usando el ID
                 companieuser = UserCompany.objects.get(
                     usuario=report.userCompany)
             except UserCompany.DoesNotExist:
@@ -283,7 +287,7 @@ class SetStatusReject(View):
             self.send_email_with_attachment(
                 report_id, fecha_convertida, companie.email, user.email, companieuser.emailContact, companie.name)
             return HttpResponse(f"Reporte rechazado con el ID: {report_id}.")
-        except Report.DoesNotExist:
+        except ReportTankMovil.DoesNotExist:
             return HttpResponse(f"El reporte {report_id} no Existe.")
 
     def send_email_with_attachment(self, id, fecha, correoempresa, correousuario, correousuarioempresa, namecompanie):
@@ -332,9 +336,9 @@ class  SVGtoPdfImagesView(View):
         id_from_url = kwargs.get('id_report')
         
         try:
-            # Consulta el modelo Report usando el ID
-            report = Report.objects.get(id=id_from_url)
-        except Report.DoesNotExist:
+            # Consulta el modelo ReportTankMovil usando el ID
+            report = ReportTankMovil.objects.get(id=id_from_url)
+        except ReportTankMovil.DoesNotExist:
             return HttpResponse("El reporte no existe.")
 
         # Aquí puedes acceder a los campos del reporte
@@ -357,7 +361,7 @@ class  SVGtoPdfImagesView(View):
         company = []
 
         try:
-            # Consulta el modelo Report usando el ID
+            # Consulta el modelo ReportTankMovil usando el ID
             user = User.objects.get(name=report.user)
            
             company.append(user.name)
@@ -366,7 +370,7 @@ class  SVGtoPdfImagesView(View):
         
 
         try:
-            # Consulta el modelo Report usando el ID
+            # Consulta el modelo ReportTankMovil usando el ID
             companies = Companie.objects.get(name=report.companie)            
             company.append(companies.name)
             company.append(companies.nit)
@@ -375,7 +379,7 @@ class  SVGtoPdfImagesView(View):
         
 
         try:
-            # Consulta el modelo Report usando el ID
+            # Consulta el modelo ReportTankMovil usando el ID
             companieuser = UserCompany.objects.get(usuario=report.userCompany)
             company.append(companieuser.phone)
             company.append(companieuser.address)
@@ -469,9 +473,9 @@ class CertificatePDFView(View):
         id_from_url = kwargs.get('id_report')       
 
         try:
-            # Consulta el modelo Report usando el ID
-            report = Report.objects.get(id=id_from_url)
-        except Report.DoesNotExist:
+            # Consulta el modelo ReportTankMovil usando el ID
+            report = ReportTankMovil.objects.get(id=id_from_url)
+        except ReportTankMovil.DoesNotExist:
             return HttpResponse("El reporte no existe.")
 
         # Aquí puedes acceder a los campos del reporte
@@ -492,7 +496,7 @@ class CertificatePDFView(View):
         company = []
 
         try:
-            # Consulta el modelo Report usando el ID
+            # Consulta el modelo ReportTankMovil usando el ID
             user = User.objects.get(name=report.user)
            
             company.append(user.name)
@@ -501,7 +505,7 @@ class CertificatePDFView(View):
         
 
         try:
-            # Consulta el modelo Report usando el ID
+            # Consulta el modelo ReportTankMovil usando el ID
             companies = Companie.objects.get(name=report.companie)            
             company.append(companies.name)
             company.append(companies.nit)
@@ -512,7 +516,7 @@ class CertificatePDFView(View):
         
 
         try:
-            # Consulta el modelo Report usando el ID
+            # Consulta el modelo ReportTankMovil usando el ID
             companieuser = UserCompany.objects.get(usuario=report.userCompany)
             company.append(companieuser.phone)
             company.append(companieuser.address)

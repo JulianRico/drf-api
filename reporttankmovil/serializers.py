@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Report
+from .models import ReportTankMovil
 from users.models import User
 from companies.models import Companie, UserCompany
 import yagmail
@@ -30,13 +30,13 @@ class ReportSerializer(serializers.ModelSerializer):
     userCompany = UserCompanySerializer()
 
     class Meta:
-        model = Report
+        model = ReportTankMovil
         fields = ('id', 'status_display', 'status', 'questionsmtto', 'questionviews', 'tankidentification', 'observationsandresults', 'signatures',
                   'questionsdeterioration', 'photos', 'user', 'companie', 'userCompany', 'created_at')
         read_only_fields = ( 'id', 'created_at',)
 
     def get_status_display(self, obj):
-        return dict(Report.SelfStatus).get(obj.status)
+        return dict(ReportTankMovil.SelfStatus).get(obj.status)
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
@@ -48,7 +48,7 @@ class ReportSerializer(serializers.ModelSerializer):
         user_company, _ = UserCompany.objects.get_or_create(
             **user_company_data)
 
-        report = Report.objects.create(
+        report = ReportTankMovil.objects.create(
             user=user,
             companie=companie,
             userCompany=user_company,
@@ -62,7 +62,7 @@ class ReportSerializer(serializers.ModelSerializer):
         user = "testqchecker@gmail.com"
         codeApp = "rflahrjtjqzbdumr"
         # Reemplaza con la URL real
-        url_revisar = f'http://198.50.156.11:8000/api/pdfcreatereporte/{id}'
+        url_revisar = f'http://198.50.156.11:8000/api/pdfcreatereportemovil/{id}'
         # Reemplaza con la URL real
         url_aprobar = f'http://198.50.156.11:8000/api/reportaprobe/{id}'
 

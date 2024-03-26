@@ -5,16 +5,16 @@ from .views import SetSatus, SVGtoPdfImagesView,  CertificatePDFView, SetStatusR
 
 router = routers.DefaultRouter()
 
-router.register(r'api/reports', ReportViewSet, 'reports')
+router.register(r'api/reporttankmovil', ReportViewSet, 'reporttankmovil')
 
 urlpatterns = [
-     path(r'api/reportreject/<int:id_report>/',
+     path(r'api/reportmovilreject/<int:id_report>/',
          SetStatusReject.as_view(), name='SetStatusReject'),
-     path(r'api/pdfcreatereporte/<int:id_report>/',
+     path(r'api/pdfcreatereportemovil/<int:id_report>/',
          SVGtoPdfImagesView.as_view(), name='ReporteImagenesPDF'),
-     path(r'api/pdfcreatecertificate/<int:id_report>/',
+     path(r'api/pdfcreatecertificatemovil/<int:id_report>/',
          CertificatePDFView.as_view(), name='CertificadosPDF'),
-     path(r'api/reportaprobe/<int:report_id>/',
+     path(r'api/reportmovilaprobe/<int:report_id>/',
          SetSatus.as_view(), name='AprobarReporte'),
     *router.urls
 ]
