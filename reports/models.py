@@ -13,6 +13,7 @@ class Report(models.Model):
     observationsandresults = models.JSONField()
     signatures = models.JSONField()
     photos = models.JSONField(null=True)
+    idcerticate = models.CharField(max_length=30,null=True, blank=True)
 
     SelfStatus = ((1, "Espera"), (2, "Rechazado"), (3, "Aprobado"))
     status = models.IntegerField(choices=SelfStatus, default=1)
