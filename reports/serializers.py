@@ -68,7 +68,7 @@ class ReportSerializer(serializers.ModelSerializer):
 
         url_rechazar = f'http://198.50.156.11:8000/api/reportreject/{id}'
 
-        subject = 'Informe para su revisión y aprobación [Quality Control - Certificado {id} Generado]'
+        subject = f'Informe para su revisión y aprobación [Quality Control reporte {id}]'
         to = ['juliquinterorico@hotmail.com',
                "jhonfredyquintero@gmail.com", userEmail]
         # Genera el contenido HTML directamente en el código
