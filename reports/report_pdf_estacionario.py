@@ -51,6 +51,7 @@ def GeneratePDFintoSVG(questions_mtto, question_views, questions_deterioration, 
     hoja['C14'] = companie[3]
     hoja['C15'] = companie[6]
     hoja['C13'] = companie[4]
+    hoja['F77'] = companie[0]
     
     #cumple final 
     if aprobado == True:
@@ -507,6 +508,8 @@ def GeneratePDFintoSVG(questions_mtto, question_views, questions_deterioration, 
     if JSONquestions_mtto['otros1'] == True:
      hoja['O71'] = 'X'
    
+
+
     if aprobado:
       print('aprobado imagen')
       response = requests.get('https://firebasestorage.googleapis.com/v0/b/data-qc-api.appspot.com/o/FixedPictures%2FAPROBADO.png?alt=media&token=3a71be78-c06d-4832-9e63-342fa541fd76')
